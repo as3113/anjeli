@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Anjeli</title>
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Poppins&family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    .btn-kelly { background: #34b7a7; color: #fff; border: none; }
+    .btn-kelly:hover { background: #2a9689; color: #fff; }
+
+    /* Dashboard Tabs */
+    .dashboard-tabs {
+      margin-top: 50px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .dashboard-tab-btn {
+      padding: 12px 25px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      background: #e9f6f5;
+      color: #333;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .dashboard-tab-btn.active {
+      background: #34b7a7;
+      color: #fff;
+    }
+
+    .tab-content-section {
+      display: none;
+      padding: 40px;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .tab-content-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    #map {
+      width: 100%;
+      height: 500px;
+      background: #ccc;
+      border-radius: 12px;
+    }
+  </style>
+  <!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <header id="header" class="header d-flex align-items-center light-background sticky-top">
+    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+        <h1 class="sitename">Anjeli</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="index.html" id="logout-link">Logout</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- Dashboard -->
+  <main class="container">
+
+    <h2 class="text-center mt-5">Supplier Dashboard</h2>
+    <p class="text-center">Welcome to your business tools</p>
+
+    <!-- Tabs -->
+    <div class="dashboard-tabs">
+      <button class="dashboard-tab-btn active" onclick="switchTab(event, 'table-tab')">📋 Supplier Table</button>
+<button class="dashboard-tab-btn" onclick="switchTab(event, 'map-tab')">🗺️ Supplier Map</button>
+
+    </div>
+
+<!-- TABLE TAB -->
+<div id="table-tab" class="tab-content-section active">
+  <h3>Supplier List</h3>
+
+  <!-- Category filter tags -->
+  <div class="mb-3" id="categoryFilters">
+    <button class="btn btn-sm btn-outline-secondary active" data-category="All">All</button>
+    <button class="btn btn-sm btn-outline-primary" data-category="Haute Couture">Haute Couture</button>
+    <button class="btn btn-sm btn-outline-success" data-category="Ready-to-Wear">Ready-to-Wear</button>
+    <button class="btn btn-sm btn-outline-warning" data-category="Accessories">Accessories</button>
+  </div>
+
+  <!-- Search input -->
+  <input type="text" class="form-control mb-4" placeholder="Filter suppliers..." id="filterInput">
+
+  <!-- Supplier table -->
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>City</th>
+        <th>Contact</th>
+      </tr>
+    </thead>
+    <tbody id="supplierTable">
+      <!-- Table rows will be dynamically added by JS -->
+    </tbody>
+  </table>
+</div>
+
+
+    <!-- MAP TAB -->
+    <div id="map-tab" class="tab-content-section">
+  <!-- Category filter tags for map -->
+  <div class="mb-3" id="mapCategoryFilters">
+    <button class="btn btn-sm btn-outline-secondary active" data-category="All">All</button>
+    <button class="btn btn-sm btn-outline-primary" data-category="Haute Couture">Haute Couture</button>
+    <button class="btn btn-sm btn-outline-success" data-category="Ready-to-Wear">Ready-to-Wear</button>
+    <button class="btn btn-sm btn-outline-warning" data-category="Accessories">Accessories</button>
+  </div>
+
+  <!-- MAP CONTAINER -->
+  <div id="map"></div>
+</div>
+
+
+
+  </main>
+
+
+  <!-- Vendor JS -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Supabase + Dashboard Logic -->
+  <script>
+
+    // Sample supplier data
+const suppliers = [
+  { name: "Maison Élégance", category: "Haute Couture", city: "Paris", contact: "contact@maisonelegance.fr" },
+  { name: "Velvet & Co.", category: "Haute Couture", city: "Milan", contact: "info@velvetco.it" },
+  { name: "Urban Stitches", category: "Ready-to-Wear", city: "New York", contact: "support@urbanstitches.com" },
+  { name: "Tokyo Threads", category: "Ready-to-Wear", city: "Tokyo", contact: "hello@tokyothreads.jp" },
+  { name: "Silk & Sage", category: "Ready-to-Wear", city: "London", contact: "sales@silksage.co.uk" },
+  { name: "Bijoux Lumière", category: "Accessories", city: "Nice", contact: "info@bijouxlumiere.fr" },
+  { name: "Nordic Leatherworks", category: "Accessories", city: "Oslo", contact: "contact@nordicleather.no" },
+  { name: "Marbella Shades", category: "Accessories", city: "Marbella", contact: "team@marbellashades.es" },
+  { name: "Couture Horizon", category: "Haute Couture", city: "Los Angeles", contact: "contact@couturehorizon.com" },
+  { name: "Seoul Streetstyle", category: "Ready-to-Wear", city: "Seoul", contact: "info@seoulstreetstyle.kr" }
+];
+
+const tableBody = document.getElementById("supplierTable");
+const filterInput = document.getElementById("filterInput");
+const categoryButtons = document.querySelectorAll("#categoryFilters button");
+
+let selectedCategory = "All";
+let selectedMapCategory = "All";  // <-- add this
+
+// Render table
+function renderTable() {
+  const filterText = filterInput.value.toLowerCase();
+  tableBody.innerHTML = "";
+
+  suppliers
+    .filter(s => {
+      const textMatch =
+        s.name.toLowerCase().includes(filterText) ||
+        s.city.toLowerCase().includes(filterText) ||
+        s.category.toLowerCase().includes(filterText);
+      const categoryMatch = selectedCategory === "All" || s.category === selectedCategory;
+      return textMatch && categoryMatch;
+    })
+    .forEach(s => {
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td>${s.name}</td>
+    <td>${s.category}</td>
+    <td>${s.city}</td>
+    <td>${s.contact}</td>
+  `;
+  tableBody.appendChild(row);
+});
+
+}
+
+// Text filter input
+filterInput.addEventListener("input", renderTable);
+
+// Category filter buttons
+categoryButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    categoryButtons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    selectedCategory = btn.dataset.category;
+    renderTable();
+  });
+});
+
+// Initial render
+renderTable();
+
+    const supabaseClient = supabase.createClient(
+      "https://hhiceggnemhghlispakc.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhoaWNlZ2duZW1oZ2hsaXNwYWtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NDMzNjIsImV4cCI6MjA4MDAxOTM2Mn0.6op0g_NBY7PkLNF1ADQv_YmbMQEToR0BGtkmsYEp6k0"
+    );
+
+    // Protect the dashboard
+    async function protectPage() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) {
+        window.location.href = "testlogin.html";
+      }
+    }
+    protectPage();
+
+    // Logout
+    document.getElementById("logout-link").addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  await supabaseClient.auth.signOut();
+
+  // Important: delay ensures session is cleared
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 150);
+});
+
+
+function switchTab(evt, tabId) {
+  // Remove active classes
+  document.querySelectorAll(".dashboard-tab-btn").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll(".tab-content-section").forEach(sec => sec.classList.remove("active"));
+
+  // Add active class to clicked button and tab
+  evt.currentTarget.classList.add("active");
+  const tab = document.getElementById(tabId);
+  if (!tab) return; // guard if id missing
+  tab.classList.add("active");
+
+  // Initialize map only when map tab is activated
+  if (tabId === 'map-tab') {
+    initMap();
+  }
+}
+
+
+
+
+
+    // Initialize Leaflet map
+    const supplierLocations = [
+  { name: "Maison Élégance", lat: 48.8566, lng: 2.3522, category: "Haute Couture" },  
+  { name: "Velvet & Co.", lat: 45.4642, lng: 9.1900, category: "Ready-to-Wear" },      
+  { name: "Urban Stitches", lat: 40.7128, lng: -74.0060, category: "Accessories" },  
+  { name: "Tokyo Threads", lat: 35.6762, lng: 139.6503, category: "Haute Couture" },  
+  { name: "Silk & Sage", lat: 51.5074, lng: -0.1278, category: "Ready-to-Wear" },     
+  { name: "Bijoux Lumière", lat: 43.7102, lng: 7.2620, category: "Accessories" },   
+  { name: "Nordic Leatherworks", lat: 59.9139, lng: 10.7522, category: "Haute Couture" }, 
+  { name: "Marbella Shades", lat: 36.5101, lng: -4.8825, category: "Accessories" }, 
+  { name: "Couture Horizon", lat: 34.0522, lng: -118.2437, category: "Ready-to-Wear" }, 
+  { name: "Seoul Streetstyle", lat: 37.5665, lng: 126.9780, category: "Haute Couture" }  
+];
+// Initialize Leaflet map
+let map; // global
+let markers = [];
+
+function initMap() {
+  if (!map) {
+    map = L.map('map').setView([48.8566, 2.3522], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+  }
+
+  renderMarkers();
+  setTimeout(() => map.invalidateSize(), 100);
+}
+
+// Render markers by category
+function renderMarkers() {
+  markers.forEach(m => map.removeLayer(m));
+  markers = [];
+
+  supplierLocations
+    .filter(s => selectedMapCategory === "All" || s.category === selectedMapCategory)
+    .forEach(s => {
+      const marker = L.marker([s.lat, s.lng])
+        .addTo(map)
+        .bindPopup(`<strong>${s.name}</strong><br>${s.category}`);
+      markers.push(marker);
+    });
+}
+
+
+// Map category buttons
+const mapCategoryButtons = document.querySelectorAll("#mapCategoryFilters button");
+mapCategoryButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    mapCategoryButtons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    selectedMapCategory = btn.dataset.category;
+    renderMarkers();
+  });
+});
+
+// Initialize map when map tab is clicked
+// document.querySelector("button[onclick*='map-tab']").addEventListener("click", initMap);
+
+  </script>
+
+</body>
+</html>
