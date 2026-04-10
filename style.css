@@ -1,0 +1,291 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #FFFDF6;
+}
+
+/* HEADER */
+
+header {
+    background-color: white;
+    color: #1a1a1a;
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.logo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-style: italic;
+}
+
+.name {
+    color: #0C2B79;
+}
+
+.designer {
+    color: #C62E8B;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+nav a {
+    color: #1a1a1a;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #0C2B79;
+}
+
+/* HERO */
+
+.hero {
+    background: url('DESIGNER.png') center/cover no-repeat;
+    color: white;
+    padding: 150px 2rem;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-content {
+    max-width: 600px;
+}
+
+.hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    margin-bottom: 1rem;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.hero p {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    margin-bottom: 2rem;
+}
+
+.cta-button {
+    background-color: #C62E8B;
+    color: #1a1a1a;
+    padding: 1rem 2.5rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    font-style: italic;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #A02473;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(198, 46, 139, 0.3);
+}
+
+/* CONTENT LAYOUT */
+
+.content {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr; /* text left, image right */
+    gap: 3rem;
+    align-items: start;
+}
+
+/* TEXT */
+
+.text-section {
+    color: #700808;
+    font-size: 1.05rem;
+    line-height: 1.75;
+}
+
+.page-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #2E1B45;
+    letter-spacing: 0.15em;
+    margin-bottom: 1.5rem;
+}
+
+.text-section p {
+    margin-bottom: 1.8rem;
+}
+
+/* IMAGES */
+
+.image-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* SMALL SEPARATOR IMAGES (FFFDF6) */
+
+.text-image,
+.centered-image {
+    display: block;
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+    margin: 2rem auto;
+    opacity: 0.9;
+}
+
+/* DESKTOP TUNING */
+
+@media (min-width: 769px) {
+    .text-image {
+        max-width: 140px;
+        margin: 2.5rem auto; /* centers it */
+    }
+
+    .centered-image {
+        max-width: 160px;
+        margin: 2.5rem auto; /* keep consistency */
+    }
+}
+
+/* TABLET */
+
+@media (max-width: 1024px) {
+    .header-container {
+        padding: 0 1.5rem;
+    }
+
+    .content {
+        padding: 0 1.5rem;
+        gap: 2rem;
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+    .header-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    nav ul {
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 0 1rem;
+    }
+
+    .text-section {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .text-image.mobile-hide,
+    .centered-image.mobile-hide {
+        display: none;
+    }
+
+    /* HERO IMAGE SHIFT (shows more right side) */
+    .hero {
+        background-position: 75% center;
+    }
+
+    footer {
+        padding: 1.5rem;
+    }
+}
+
+/* SMALL MOBILE (OPTIONAL FINE TUNING) */
+
+@media (max-width: 480px) {
+
+    .logo {
+        font-size: 1.1rem;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .content {
+        padding: 0 0.8rem;
+        gap: 1.5rem;
+    }
+
+    .text-section {
+        font-size: 0.95rem;
+    }
+
+    .text-image,
+    .centered-image {
+        max-width: 90%;
+    }
+
+    /* slightly more right shift if needed */
+    .hero {
+        background-position: 85% center;
+    }
+
+    footer {
+        padding: 1rem;
+    }
+}
+
+/* FOOTER */
+
+footer {
+    background-color: #1a1a1a;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+    margin-top: 3rem;
+}
