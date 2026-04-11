@@ -20,6 +20,8 @@ header {
     position: sticky;
     top: 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    background-color: white; /* ensure it's not transparent */
 }
 
 .header-container {
@@ -233,6 +235,13 @@ nav a:hover {
         display: none;
     }
 
+     .text-image,
+    .centered-image {
+        max-width: 100px;   /* smaller + controlled */
+        margin: 1.5rem auto;
+        opacity: 0.85;
+    }
+
     /* HERO IMAGE SHIFT (shows more right side) */
     .hero {
         background-position: 75% center;
@@ -265,9 +274,11 @@ nav a:hover {
         font-size: 0.95rem;
     }
 
-    .text-image,
+     .text-image,
     .centered-image {
-        max-width: 90%;
+        max-width: 100px;   /* smaller + controlled */
+        margin: 1.5rem auto;
+        opacity: 0.85;
     }
 
     /* slightly more right shift if needed */
